@@ -33,10 +33,23 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of Person
 // Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
+use std::str::FromStr;
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        let v: Vec<_> = s.split(',').collect();
+
+        if v.len() != 2 || v[0] == "" {
+            return Person::default();
+        }
+
+        match usize::from_str(v[1]) {
+            Ok(val) => Person {
+                name: v[0].to_string(),
+                age: val,
+            },
+            Err(_) => return Person::default(),
+        }
     }
 }
 
